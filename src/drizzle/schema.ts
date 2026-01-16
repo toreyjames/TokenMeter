@@ -84,6 +84,35 @@ export const suggestions = pgTable('suggestions', {
   createdAt: timestamp('created_at').defaultNow().notNull(),
 });
 
+// Subscriptions - Stripe subscription tracking
+export const subscriptions = pgTable('subscriptions', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  userId: text('user_id').notNull().unique(),
+  
+  // Stripe IDs
+  stripeCustomerId: text('stripe_customer_id').notNull(),
+  stripeSubscriptionId: text('stripe_subscription_id'),
+  stripePriceId: text('stripe_price_id'),
+  
+  // Subscription status
+  plan: text('plan').notNull().default('trial'), // 'trial' | 'starter' | 'pro' | 'cancelled'
+  status: text('status').notNull().default('trialing'), // 'trialing' | 'active' | 'cancelled' | 'past_due'
+  
+  // Trial tracking
+  trialEndsAt: timestamp('trial_ends_at'),
+  
+  // Billing cycle
+  currentPeriodStart: timestamp('current_period_start'),
+  currentPeriodEnd: timestamp('current_period_end'),
+  
+  // Usage tracking (reset each billing cycle)
+  requestCount: integer('request_count').default(0).notNull(),
+  requestLimit: integer('request_limit').default(25000).notNull(), // Starter = 25K, Pro = 250K
+  
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+});
+
 // Type exports
 export type ApiKey = typeof apiKeys.$inferSelect;
 export type NewApiKey = typeof apiKeys.$inferInsert;
@@ -91,3 +120,4 @@ export type RequestLog = typeof requestLogs.$inferSelect;
 export type NewRequestLog = typeof requestLogs.$inferInsert;
 export type Alert = typeof alerts.$inferSelect;
 export type Suggestion = typeof suggestions.$inferSelect;
+export type Subscription = typeof subscriptions.$inferSelect;

@@ -2,17 +2,44 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import { SignInButton, SignedIn, SignedOut } from '@clerk/nextjs';
+import { SignInButton, SignedIn, SignedOut, useAuth } from '@clerk/nextjs';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Check, X, Gauge, ArrowRight } from 'lucide-react';
+import { Check, X, Gauge, ArrowRight, Loader2 } from 'lucide-react';
 
 export default function PricingPage() {
   const [annual, setAnnual] = useState(false);
+  const [loading, setLoading] = useState<string | null>(null);
+  const { isSignedIn } = useAuth();
 
   const starterPrice = annual ? 7 : 9;
   const proPrice = annual ? 24 : 29;
+
+  const handleCheckout = async (plan: 'starter' | 'pro') => {
+    if (!isSignedIn) return;
+    
+    setLoading(plan);
+    try {
+      const res = await fetch('/api/stripe/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ plan, annual }),
+      });
+      
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        alert('Failed to start checkout. Please try again.');
+      }
+    } catch (error) {
+      console.error('Checkout error:', error);
+      alert('Failed to start checkout. Please try again.');
+    } finally {
+      setLoading(null);
+    }
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -111,11 +138,18 @@ export default function PricingPage() {
                   </SignInButton>
                 </SignedOut>
                 <SignedIn>
-                  <Link href="/dashboard">
-                    <Button className="w-full mb-6" variant="outline">
-                      Go to Dashboard
-                    </Button>
-                  </Link>
+                  <Button 
+                    className="w-full mb-6" 
+                    variant="outline"
+                    onClick={() => handleCheckout('starter')}
+                    disabled={loading === 'starter'}
+                  >
+                    {loading === 'starter' ? (
+                      <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Processing...</>
+                    ) : (
+                      'Start 14-day free trial'
+                    )}
+                  </Button>
                 </SignedIn>
                 
                 <ul className="space-y-3">
@@ -155,11 +189,17 @@ export default function PricingPage() {
                   </SignInButton>
                 </SignedOut>
                 <SignedIn>
-                  <Link href="/dashboard">
-                    <Button className="w-full mb-6">
-                      Go to Dashboard
-                    </Button>
-                  </Link>
+                  <Button 
+                    className="w-full mb-6"
+                    onClick={() => handleCheckout('pro')}
+                    disabled={loading === 'pro'}
+                  >
+                    {loading === 'pro' ? (
+                      <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Processing...</>
+                    ) : (
+                      'Start 14-day free trial'
+                    )}
+                  </Button>
                 </SignedIn>
                 
                 <ul className="space-y-3">
@@ -194,7 +234,7 @@ export default function PricingPage() {
             <div className="space-y-6">
               <FAQ 
                 q="How does the 14-day free trial work?"
-                a="Start using TokenMeter immediately with full Pro features. No credit card required to start. You'll only be charged if you decide to continue after 14 days."
+                a="Start using TokenMeter immediately with full Pro features. No charge until your trial ends. Cancel anytime during the trial and you won't be charged."
               />
               <FAQ 
                 q="What counts as a request?"
