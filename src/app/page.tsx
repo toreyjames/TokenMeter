@@ -179,29 +179,33 @@ export default function Home() {
           Simple pricing
         </h2>
         <p className="text-center text-muted-foreground mb-12">
-          Start free, scale as you grow
+          Save more than you spend. 14-day free trial included.
         </p>
         
-        <div className="grid gap-6 md:grid-cols-3 max-w-4xl mx-auto">
+        <div className="grid gap-6 md:grid-cols-2 max-w-3xl mx-auto">
           <Card>
             <CardHeader>
-              <CardTitle>Free</CardTitle>
-              <CardDescription>For personal projects</CardDescription>
-              <div className="text-3xl font-bold">$0</div>
+              <CardTitle>Starter</CardTitle>
+              <CardDescription>For solo developers with real API usage</CardDescription>
+              <div className="text-3xl font-bold">$9<span className="text-base font-normal">/mo</span></div>
             </CardHeader>
             <CardContent>
               <ul className="space-y-2 text-sm">
                 <li className="flex items-center gap-2">
                   <Check className="h-4 w-4 text-primary" />
-                  10K requests/month
+                  25K requests/month
                 </li>
                 <li className="flex items-center gap-2">
                   <Check className="h-4 w-4 text-primary" />
-                  7-day data retention
+                  All 6 AI providers
                 </li>
                 <li className="flex items-center gap-2">
                   <Check className="h-4 w-4 text-primary" />
-                  1 connection
+                  2 budget alerts
+                </li>
+                <li className="flex items-center gap-2">
+                  <Check className="h-4 w-4 text-primary" />
+                  Cost optimization tips
                 </li>
               </ul>
             </CardContent>
@@ -211,58 +215,36 @@ export default function Home() {
             <CardHeader>
               <Badge className="w-fit mb-2">Popular</Badge>
               <CardTitle>Pro</CardTitle>
-              <CardDescription>For teams & production</CardDescription>
-              <div className="text-3xl font-bold">$19<span className="text-base font-normal">/mo</span></div>
+              <CardDescription>For teams building AI products</CardDescription>
+              <div className="text-3xl font-bold">$29<span className="text-base font-normal">/mo</span></div>
             </CardHeader>
             <CardContent>
               <ul className="space-y-2 text-sm">
                 <li className="flex items-center gap-2">
                   <Check className="h-4 w-4 text-primary" />
-                  Unlimited requests
+                  250K requests/month
                 </li>
                 <li className="flex items-center gap-2">
                   <Check className="h-4 w-4 text-primary" />
-                  30-day data retention
+                  5 team members
                 </li>
                 <li className="flex items-center gap-2">
                   <Check className="h-4 w-4 text-primary" />
-                  Unlimited connections
+                  Unlimited alerts
                 </li>
                 <li className="flex items-center gap-2">
                   <Check className="h-4 w-4 text-primary" />
-                  Budget alerts
+                  Slack + CSV export
                 </li>
               </ul>
             </CardContent>
           </Card>
-          
-          <Card>
-            <CardHeader>
-              <CardTitle>Enterprise</CardTitle>
-              <CardDescription>For large organizations</CardDescription>
-              <div className="text-3xl font-bold">Custom</div>
-            </CardHeader>
-            <CardContent>
-              <ul className="space-y-2 text-sm">
-                <li className="flex items-center gap-2">
-                  <Check className="h-4 w-4 text-primary" />
-                  Everything in Pro
-                </li>
-                <li className="flex items-center gap-2">
-                  <Check className="h-4 w-4 text-primary" />
-                  SSO/SAML
-                </li>
-                <li className="flex items-center gap-2">
-                  <Check className="h-4 w-4 text-primary" />
-                  Self-hosted option
-                </li>
-                <li className="flex items-center gap-2">
-                  <Check className="h-4 w-4 text-primary" />
-                  Dedicated support
-                </li>
-              </ul>
-            </CardContent>
-          </Card>
+        </div>
+        
+        <div className="text-center mt-8">
+          <Link href="/pricing" className="text-sm text-muted-foreground hover:text-foreground underline underline-offset-4">
+            View full pricing details →
+          </Link>
         </div>
       </section>
 
