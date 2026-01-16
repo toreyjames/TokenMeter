@@ -21,6 +21,9 @@ export default function Home() {
               <Link href="/docs" className="transition-colors hover:text-foreground/80 text-foreground/60">
                 Docs
               </Link>
+              <Link href="/pricing" className="transition-colors hover:text-foreground/80 text-foreground/60">
+                Pricing
+              </Link>
             </nav>
             
             <SignedIn>
